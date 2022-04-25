@@ -3,10 +3,10 @@ import datetime
 import requests
 import pathlib
 
-# Загрузить схемы postman (postman.json) по указанному ниже пути
-#    и подправить в них значение {{url}} на корректное значение для загрузки в postman
-# pwd = os.getcwd()  # текущая директория - pwd
-pwd = os.path.dirname(os.path.abspath(__file__))  # директория скрипта
+server_login = 'qa'
+server_password = 'qa'
+server = 'nightly.genci0.eisgroup.com'
+# server = 'automation.genci0.eisgroup.com'
 
 schemas = ['policy-pnc-motor',  # policy-pnc-motor-policy-pnc-motor-app-vs
            'policy-auto',  # policy-pnc-policy-auto-app-vs
@@ -15,8 +15,10 @@ schemas = ['policy-pnc-motor',  # policy-pnc-motor-policy-pnc-motor-app-vs
            'policy-generic',  # policy-policy-generic-app-vs
            'purchase']  # purchase-purchase-app-vs
 
-# server = 'automation.genci0.eisgroup.com'
-server = 'nightly.genci0.eisgroup.com'
+# Загрузить схемы postman (postman.json) по указанному ниже пути
+#    и подправить в них значение {{url}} на корректное значение для загрузки в postman
+# pwd = os.getcwd()  # текущая директория - pwd
+pwd = os.path.dirname(os.path.abspath(__file__))  # директория скрипта
 
 # создать директорию для выгружаемых postmen.json файлов
 pwd = os.path.join(pwd, datetime.datetime.now().strftime('%Y%m%d_%H%M%S'))
@@ -28,7 +30,7 @@ for schema in schemas:
     postman_link = f'{postman_server}/api/common/schema/v1/postman.json'
 
     # сохранить postman.json на диске с именем схемы
-    response = requests.get(postman_link, auth=requests.auth.HTTPBasicAuth('qa', 'qa'))
+    response = requests.get(postman_link, auth=requests.auth.HTTPBasicAuth(server_login, server_password))
     open(postman_file, 'wb').write(response.content)
 
     # поменять в файлах {{url}} на нужный линк и сохранить во временном файле
